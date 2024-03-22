@@ -55,7 +55,9 @@ const Form = () => {
   return (
     <Box bg={"#F0EBEB"} rounded="lg" p={"40px 20px"}>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Text>Basic Details</Text>
+        <Text fontSize={"18px"} fontWeight={700} mb={1}>
+          Basic Details
+        </Text>
         <Box display={"flex"} mb={"20px"} gap={10}>
           {/* first name */}
           <FormControl isInvalid={!!errors.first_name}>
@@ -100,7 +102,9 @@ const Form = () => {
             </FormErrorMessage>
           </FormControl>
         </Box>
-        <Text>Other Information</Text>
+        <Text fontSize={"18px"} fontWeight={700} mb={1}>
+          Other Information
+        </Text>
         <Box display={"flex"} mb={"20px"} gap={10}>
           {/* email */}
           <FormControl isInvalid={!!errors.email}>
