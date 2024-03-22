@@ -8,6 +8,9 @@ import {
   Button,
   Box,
   IconButton,
+  Text,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 
@@ -19,6 +22,7 @@ type FormValues = {
     stack: string;
   }[];
   dob: Date;
+  gender: "";
 };
 
 const Form = () => {
@@ -49,13 +53,16 @@ const Form = () => {
     // });
   }
   return (
-    <div>
+    <Box bg={"#F0EBEB"} rounded="lg" p={"40px 20px"}>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <Box display={"flex"}>
+        <Text>Basic Details</Text>
+        <Box display={"flex"} mb={"20px"} gap={10}>
           {/* first name */}
           <FormControl isInvalid={!!errors.first_name}>
             <FormLabel htmlFor="first_name">First name</FormLabel>
             <Input
+              variant={"filled"}
+              bg={"#D7D7D7"}
               type="text"
               id="first_name"
               placeholder="First Name"
@@ -75,6 +82,8 @@ const Form = () => {
           <FormControl isInvalid={!!errors.last_name}>
             <FormLabel htmlFor="last_name">Last Name</FormLabel>
             <Input
+              variant={"filled"}
+              bg={"#D7D7D7"}
               type="text"
               id="last_name"
               placeholder="Last Name"
@@ -91,11 +100,14 @@ const Form = () => {
             </FormErrorMessage>
           </FormControl>
         </Box>
-        <Box display={"flex"}>
+        <Text>Other Information</Text>
+        <Box display={"flex"} mb={"20px"} gap={10}>
           {/* email */}
           <FormControl isInvalid={!!errors.email}>
             <FormLabel htmlFor="email">email</FormLabel>
             <Input
+              variant={"filled"}
+              bg={"#D7D7D7"}
               id="email"
               type="email"
               placeholder="Email"
@@ -120,10 +132,12 @@ const Form = () => {
           <FormControl isInvalid={!!errors.dob}>
             <FormLabel htmlFor="dob">Date of birth</FormLabel>
             <Input
+              variant={"filled"}
+              bg={"#D7D7D7"}
               type="date"
               id="dob"
               {...register("dob", {
-                valueAsDate:true,
+                valueAsDate: true,
                 required: {
                   value: true,
                   message: "Date of birth required",
@@ -136,43 +150,76 @@ const Form = () => {
           </FormControl>
         </Box>
 
-        <Box display={"flex"}>
+        <Box display={"flex"} mb={"20px"} gap={10}>
           {/* tech stack */}
 
           <FormControl isInvalid={!!errors.tech_stack}>
-            <FormLabel htmlFor="last_name">Tech Stack</FormLabel>{" "}
-            <IconButton
-              aria-label="Add tech stack"
-              icon={<AddIcon />}
-              onClick={() => append({ stack: "" })}
-            />
+            <Box
+              display={"flex"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+              mb={1}
+            >
+              <FormLabel htmlFor="last_name">Tech Stack</FormLabel>{" "}
+              <IconButton
+                aria-label="Add tech stack"
+                icon={<AddIcon />}
+                onClick={() => append({ stack: "" })}
+                bg={"#F0EBEB"}
+              />
+            </Box>
+
             {fields.map((field, index) => (
-              <Box key={field.id} display={"flex"}>
-                <Input
-                  type="text"
-                  id={`tech_stack.${index}.stack`}
-                  placeholder="Tech Stack"
-                  {...register(`tech_stack.${index}.stack` as const)}
-                />
-                {index > 0 && (
-                  <IconButton
-                    aria-label="Add tech stack"
-                    icon={<CloseIcon />}
-                    onClick={() => remove(index)}
+              <Box key={field.id} display={"flex"} mb={2}>
+                <InputGroup>
+                  <Input
+                    variant={"filled"}
+                    bg={"#D7D7D7"}
+                    type="text"
+                    id={`tech_stack.${index}.stack`}
+                    placeholder="Tech Stack"
+                    {...register(`tech_stack.${index}.stack` as const)}
                   />
-                )}
+                  {index > 0 && (
+                    <InputRightElement>
+                      <IconButton
+                        bg={"#F0EBEB"}
+                        size={"sm"}
+                        aria-label="Add tech stack"
+                        icon={<CloseIcon />}
+                        onClick={() => remove(index)}
+                      />
+                    </InputRightElement>
+                  )}
+                </InputGroup>
               </Box>
             ))}
             <FormErrorMessage>
               {errors.tech_stack && errors.tech_stack.message}
             </FormErrorMessage>
           </FormControl>
+
+          {/* Gender */}
+          {/* <FormControl isInvalid={!!errors.gender}>
+            <FormLabel htmlFor="gender">Gender</FormLabel>
+            <CustomDropdown
+              options={genderOptions}
+              dropdownRef={dropdownRef} // Pass dropdownRef to CustomDropdown
+              {...register("gender", {
+                required: "Gender is required",
+              })}
+            />
+            <FormErrorMessage>
+              {errors.gender && errors.gender.message}
+            </FormErrorMessage>
+            <Button onClick={handleFocus}></Button>
+          </FormControl> */}
         </Box>
-        <Button mt={4} colorScheme="teal" type="submit">
+        <Button mt={4} colorScheme="teal" type="submit" bg={"#D7D7D7"}>
           Submit
         </Button>
       </form>
-    </div>
+    </Box>
   );
 };
 

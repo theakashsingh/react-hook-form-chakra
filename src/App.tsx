@@ -5,7 +5,7 @@ import Form from "./component/Form";
 
 const App = () => {
   return (
-    <Box>
+    <Box  w={"100%"} h={"100%"} p={10}>
       <Form/>
       
     </Box>
