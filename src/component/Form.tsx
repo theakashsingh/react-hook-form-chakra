@@ -13,19 +13,11 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-
-type FormValues = {
-  first_name: string;
-  last_name: string;
-  email: string;
-  tech_stack: {
-    stack: string;
-  }[];
-  dob: Date;
-  gender: "";
-};
+import { FormValues } from "../utils/formValuetype";
+import { useState } from "react";
 
 const Form = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<FormValues>({
     defaultValues: {
       first_name: "",
@@ -36,7 +28,7 @@ const Form = () => {
     },
   });
   const { register, handleSubmit, control, formState } = form;
-  const { errors } = formState;
+  const { errors, isSubmitted } = formState;
   const { fields, append, remove } = useFieldArray({
     name: "tech_stack",
     control,
@@ -44,14 +36,17 @@ const Form = () => {
 
   function onSubmit(value: FormValues) {
     console.log("form submitted", value);
-
-    // return new Promise(resolve => {
-    //   setTimeout(() => {
-    //     alert(JSON.stringify(values, null, 2));
-    //     resolve();
-    //   }, 3000);
-    // });
+    setIsLoading(true);
+    new Promise<void>(resolve => {
+      setTimeout(() => {
+        alert(JSON.stringify(value, null, 2));
+        isSubmitted && setIsLoading(false);
+        resolve();
+      }, 3000);
+    });
   }
+  console.log({ isLoading });
+
   return (
     <Box bg={"#F0EBEB"} rounded="lg" p={"40px 20px"}>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -219,7 +214,13 @@ const Form = () => {
             <Button onClick={handleFocus}></Button>
           </FormControl> */}
         </Box>
-        <Button mt={4} colorScheme="teal" type="submit" bg={"#D7D7D7"}>
+        <Button
+          mt={4}
+          colorScheme="teal"
+          type="submit"
+          isLoading={isLoading}
+          bg={"#D7D7D7"}
+        >
           Submit
         </Button>
       </form>
