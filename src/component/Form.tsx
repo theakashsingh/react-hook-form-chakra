@@ -1,4 +1,4 @@
-import { useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, Controller } from "react-hook-form";
 
 import {
   FormErrorMessage,
@@ -11,10 +11,18 @@ import {
   Text,
   InputGroup,
   InputRightElement,
+  Icon,
 } from "@chakra-ui/react";
-import { AddIcon, CloseIcon } from "@chakra-ui/icons";
-import { FormValues } from "../utils/formValuetype";
+import {
+  AddIcon,
+  CheckIcon,
+  CloseIcon,
+  TriangleDownIcon,
+} from "@chakra-ui/icons";
+import { FormValues, optionType } from "../utils/formValuetype";
 import { useState } from "react";
+import "./CustomOption.css";
+import { Select, chakraComponents } from "chakra-react-select";
 
 const Form = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -25,8 +33,10 @@ const Form = () => {
       email: "",
       tech_stack: [{ stack: "" }],
       dob: new Date(),
+      gender: "",
     },
   });
+
   const { register, handleSubmit, control, formState } = form;
   const { errors, isSubmitted } = formState;
   const { fields, append, remove } = useFieldArray({
@@ -46,6 +56,40 @@ const Form = () => {
     });
   }
   console.log({ isLoading });
+
+  const options: optionType[] = [
+    {
+      value: "male",
+      label: "Male",
+      icon: <CheckIcon/>,
+    },
+    {
+      value: "female",
+      label: "Female",
+      icon: <CheckIcon/>,
+    },
+    {
+      value: "others",
+      label: "Others",
+      icon: <CheckIcon/>,
+    },
+  ];
+
+  const customOption = {
+    Option: ({ children, ...props }) => (
+      <chakraComponents.Option {...props}>
+        {console.log(props)}
+        <Box w={"100%"} display={"flex"} justifyContent={"space-between"}>
+          {children}
+        </Box>
+      </chakraComponents.Option>
+    ),
+    DropdownIndicator: props => (
+      <chakraComponents.DropdownIndicator {...props}>
+        <Icon as={TriangleDownIcon} />
+      </chakraComponents.DropdownIndicator>
+    ),
+  };
 
   return (
     <Box bg={"#F0EBEB"} rounded="lg" p={"40px 20px"}>
@@ -149,7 +193,7 @@ const Form = () => {
           </FormControl>
         </Box>
 
-        <Box display={"flex"} mb={"20px"} gap={10}>
+        <Box display={"flex"} alignItems={"center"} mb={"20px"} gap={10}>
           {/* tech stack */}
 
           <FormControl isInvalid={!!errors.tech_stack}>
@@ -199,20 +243,27 @@ const Form = () => {
           </FormControl>
 
           {/* Gender */}
-          {/* <FormControl isInvalid={!!errors.gender}>
-            <FormLabel htmlFor="gender">Gender</FormLabel>
-            <CustomDropdown
-              options={genderOptions}
-              dropdownRef={dropdownRef} // Pass dropdownRef to CustomDropdown
-              {...register("gender", {
-                required: "Gender is required",
-              })}
+          <FormControl isInvalid={!!errors.gender}>
+            <FormLabel htmlFor="gender" mb={3}>
+              Gender
+            </FormLabel>
+            <Controller
+              control={control}
+              name="gender"
+              rules={{ required: true }}
+              render={({ field, value, ref }) => (
+                <Select
+                  variant="filled"
+                  selectedOptionColorScheme="purple"
+                  inputRef={ref}
+                  options={options}
+                  value={options.find(c => c.value === value)}
+                  onChange={val => field.onChange(val.value)}
+                  components={customOption}
+                />
+              )}
             />
-            <FormErrorMessage>
-              {errors.gender && errors.gender.message}
-            </FormErrorMessage>
-            <Button onClick={handleFocus}></Button>
-          </FormControl> */}
+          </FormControl>
         </Box>
         <Button
           mt={4}

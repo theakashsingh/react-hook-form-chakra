@@ -8,3 +8,9 @@ export type FormValues = {
     dob: Date;
     gender: "";
   };
+
+export type optionType = {
+    value:string,
+    label:string,
+    icon:any
+}
