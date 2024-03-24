@@ -27,6 +27,7 @@ import {
 import { FormValues, optionType } from "../utils/formValuetype";
 import { useState } from "react";
 import { Select, chakraComponents } from "chakra-react-select";
+import { JSX } from "react/jsx-runtime";
 
 const Form = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -44,7 +45,7 @@ const Form = () => {
   // });
 
   // const { register, handleSubmit, control, formState } = form;
-  const { errors, isSubmitted } = formState;
+  const { errors } = formState;
   const { fields, append, remove } = useFieldArray({
     name: "tech_stack",
     control,
@@ -79,8 +80,14 @@ const Form = () => {
     },
   ];
 
+
+  interface OptionProps {
+    children: React.ReactNode; // Explicitly typing children prop
+    isSelected: boolean; // Assuming isSelected is a boolean prop
+    data: { icon: React.ReactNode }; // Assuming data is an object with an icon prop of React.ReactNode type
+  }
   const customOption = {
-    Option: ({ children, ...props }) => (
+    Option: ({ children, ...props }: OptionProps) => (
       <chakraComponents.Option {...props}>
         <Box
           w={"100%"}
@@ -92,7 +99,7 @@ const Form = () => {
         </Box>
       </chakraComponents.Option>
     ),
-    DropdownIndicator: props => (
+    DropdownIndicator: (props: JSX.IntrinsicAttributes) => (
       <chakraComponents.DropdownIndicator {...props}>
         <Icon as={TriangleDownIcon} />
       </chakraComponents.DropdownIndicator>
@@ -267,14 +274,14 @@ const Form = () => {
               rules={{
                 required: { value: true, message: "Gender is required" },
               }}
-              render={({ field, value, ref }) => (
+              render={({ field: { onChange, value, ref } }) => (
                 <Select
                   variant="filled"
                   selectedOptionColorScheme="#D7D7D7"
                   inputRef={ref}
                   options={options}
                   value={options.find(c => c.value === value)}
-                  onChange={val => field.onChange(val.value)}
+                  onChange={(val: { value: string }) => onChange(val.value)}
                   components={customOption}
                 />
               )}

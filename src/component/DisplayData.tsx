@@ -8,13 +8,16 @@ const DisplayData = () => {
   console.log({ formData });
 
   const formattedDateOfBirth = formData.dob
-    ? new Date(formData.dob).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }).replace(/ /g, '/')
+    ? new Date(formData.dob)
+        .toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        })
+        .replace(/ /g, "/")
     : "";
 
+ 
 
   return (
     <Box
@@ -75,7 +78,7 @@ const DisplayData = () => {
         <Text fontSize={"18px"} fontWeight={"700"}>
           Tech Stack:
         </Text>{" "}
-        {formData.tech_stack.map((tech,index) => (
+        {formData.tech_stack.map((tech, index) => (
           <Text key={`${index}_${tech.stack}`}>{tech.stack}</Text>
         ))}
       </Box>
