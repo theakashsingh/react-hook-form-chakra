@@ -1,7 +1,21 @@
 import { Box, Text } from "@chakra-ui/react";
+import { useFormContext } from "react-hook-form";
+import { FormValues } from "../utils/formValuetype";
 
 const DisplayData = () => {
-  
+  const { getValues } = useFormContext<FormValues>();
+  const formData = getValues();
+  console.log({ formData });
+
+  const formattedDateOfBirth = formData.dob
+    ? new Date(formData.dob).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).replace(/ /g, '/')
+    : "";
+
+
   return (
     <Box
       w={"100%"}
@@ -16,7 +30,7 @@ const DisplayData = () => {
         <Text fontSize={"18px"} fontWeight={"700"}>
           First Name:
         </Text>{" "}
-        <Text>Akash</Text>
+        <Text>{formData.first_name}</Text>
       </Box>
 
       {/* last name */}
@@ -25,7 +39,7 @@ const DisplayData = () => {
         <Text fontSize={"18px"} fontWeight={"700"}>
           Last Name:
         </Text>{" "}
-        <Text>Akash</Text>
+        <Text>{formData.last_name}</Text>
       </Box>
 
       {/* email id */}
@@ -34,7 +48,7 @@ const DisplayData = () => {
         <Text fontSize={"18px"} fontWeight={"700"}>
           Email Id:
         </Text>{" "}
-        <Text>Akash</Text>
+        <Text>{formData.email}</Text>
       </Box>
 
       {/* gender */}
@@ -43,7 +57,7 @@ const DisplayData = () => {
         <Text fontSize={"18px"} fontWeight={"700"}>
           Gender:
         </Text>{" "}
-        <Text>Akash</Text>
+        <Text>{formData.gender}</Text>
       </Box>
 
       {/* date of birth */}
@@ -52,7 +66,7 @@ const DisplayData = () => {
         <Text fontSize={"18px"} fontWeight={"700"}>
           Date of Birth:
         </Text>{" "}
-        <Text>Akash</Text>
+        <Text>{formattedDateOfBirth}</Text>
       </Box>
 
       {/* tech stack */}
@@ -61,10 +75,11 @@ const DisplayData = () => {
         <Text fontSize={"18px"} fontWeight={"700"}>
           Tech Stack:
         </Text>{" "}
-        <Text>Akash</Text>
+        {formData.tech_stack.map((tech,index) => (
+          <Text key={`${index}_${tech.stack}`}>{tech.stack}</Text>
+        ))}
       </Box>
     </Box>
-    
   );
 };
 

@@ -5,12 +5,12 @@ export type FormValues = {
     tech_stack: {
       stack: string;
     }[];
-    dob: Date;
+    dob: Date|string;
     gender: "";
   };
 
 export type optionType = {
     value:string,
     label:string,
-    icon:any
+    icon:JSX.Element;
 }
